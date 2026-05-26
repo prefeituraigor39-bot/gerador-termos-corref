@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CORREF - Substituição em DOCX Original</title>
+    <title>CORREF - Gerador de Termo de Instauração</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Segoe UI', Roboto, sans-serif;
@@ -44,11 +48,28 @@
             border-radius: 40px;
         }
 
-        .content { padding: 2rem; }
+        .header p {
+            margin-top: 8px;
+            opacity: 0.9;
+        }
 
-        .form-group { margin-bottom: 1.3rem; }
-        .form-row { display: flex; gap: 1rem; flex-wrap: wrap; }
-        .form-row .form-group { flex: 1; }
+        .content {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.3rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
 
         label {
             display: block;
@@ -115,11 +136,6 @@
             transform: translateY(-2px);
         }
 
-        .btn-secondary {
-            background: #2c7a4d;
-            margin-top: 0;
-        }
-
         .loading {
             text-align: center;
             padding: 20px;
@@ -127,7 +143,9 @@
             display: none;
         }
 
-        .loading.show { display: block; }
+        .loading.show {
+            display: block;
+        }
 
         .error {
             background: #f8d7da;
@@ -138,7 +156,9 @@
             display: none;
         }
 
-        .error.show { display: block; }
+        .error.show {
+            display: block;
+        }
 
         .success {
             background: #d4edda;
@@ -149,7 +169,9 @@
             display: none;
         }
 
-        .success.show { display: block; }
+        .success.show {
+            display: block;
+        }
 
         .info-box {
             background: #e7f3ff;
@@ -178,34 +200,33 @@
             📄 Termo de Instauração e Deliberação
             <small>CORREF</small>
         </h1>
-        <p style="margin-top: 8px;">Edição direta do arquivo DOCX original - preserva toda formatação</p>
+        <p>Substitui placeholders do DOCX original mantendo toda formatação</p>
     </div>
     <div class="content">
         <div class="info-box">
-            🔧 <strong>Como funciona:</strong> O sistema pega o arquivo DOCX original (que já tem a formatação correta),
-            substitui os placeholders <code>{{Nome}}</code>, <code>{{Matricula}}</code>, etc., e gera um novo documento
-            mantendo TODOS os estilos, margens, fontes e assinaturas originais.
+            🔧 <strong>Placeholders no seu documento:</strong> Use <code>{{Nome}}</code>, <code>{{Matricula}}</code>, 
+            <code>{{Cargo}}</code> e <code>{{Protocolo}}</code> no arquivo DOCX original.
         </div>
 
         <div class="form-row">
             <div class="form-group">
                 <label>👤 Nome completo</label>
-                <input type="text" id="nome" placeholder="Ex: JOÃO PEREIRA DA SILVA" value="JOÃO CARLOS ALMEIDA">
+                <input type="text" id="nome" placeholder="Ex: JOÃO PEREIRA DA SILVA">
             </div>
             <div class="form-group">
                 <label>🆔 Matrícula</label>
-                <input type="text" id="matricula" placeholder="Nº da matrícula" value="123456-7">
+                <input type="text" id="matricula" placeholder="Nº da matrícula">
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group">
                 <label>📌 Cargo</label>
-                <input type="text" id="cargo" placeholder="Ex: Técnico Administrativo" value="ASSISTENTE ADMINISTRATIVO">
+                <input type="text" id="cargo" placeholder="Ex: Técnico Administrativo">
             </div>
             <div class="form-group">
                 <label>📑 Nº do Protocolo</label>
-                <input type="text" id="protocolo" placeholder="Ex: 2025/001234-5" value="2025/000123-9">
+                <input type="text" id="protocolo" placeholder="Ex: 2025/001234-5">
             </div>
         </div>
 
@@ -213,27 +234,26 @@
             <label>⚥ Modelo do documento</label>
             <div class="radio-group">
                 <label class="radio-option">
-                    <input type="radio" name="genero" value="M" checked> 👨‍💼 Servidor (modelo M)
+                    <input type="radio" name="genero" value="M" checked> 👨‍💼 Servidor (masculino)
                 </label>
                 <label class="radio-option">
-                    <input type="radio" name="genero" value="F"> 👩‍💼 Servidora (modelo F)
+                    <input type="radio" name="genero" value="F"> 👩‍💼 Servidora (feminino)
                 </label>
             </div>
         </div>
 
         <button id="gerarBtn">
-            📄 Gerar DOCX substituindo placeholders
+            📄 Gerar DOCX com placeholders substituídos
         </button>
 
         <div id="loadingMsg" class="loading">
-            <span>⏳</span> Processando arquivo DOCX original...
+            ⏳ Processando arquivo DOCX original...
         </div>
         <div id="errorMsg" class="error"></div>
         <div id="successMsg" class="success"></div>
     </div>
     <footer>
-        Comissão de Requalificação e Readaptação Funcional – Divinópolis<br>
-        Os placeholders {{Nome}}, {{Matricula}}, {{Cargo}}, {{Protocolo}} são substituídos mantendo a formatação original.
+        Comissão de Requalificação e Readaptação Funcional – Divinópolis
     </footer>
 </div>
 
@@ -242,30 +262,20 @@
 
 <script>
     // ============================================
-    // URLs dos templates DOCX originais (substitua pelas suas)
-    // IMPORTANTE: Faça upload dos seus arquivos .docx para o GitHub
-    // e coloque as URLs RAW aqui:
+    // SUAS URLs RAW - já configuradas!
     // ============================================
-    const TEMPLATE_URL_M = "https://raw.githubusercontent.com/SEU_USUARIO/SEU_REPOSITORIO/main/(M)TERMO_DE_INSTAuRACAO_E_DELIBERACAO.docx";
-    const TEMPLATE_URL_F = "https://raw.githubusercontent.com/SEU_USUARIO/SEU_REPOSITORIO/main/(F)TERMO_DE_INSTAuRACAO_E_DELIBERACAO.docx";
-    
-    // Como fallback, se você não tiver os arquivos no GitHub ainda,
-    // usei URLs placeholder - você precisa substituir!
-    
-    // Função para substituir placeholders no XML do DOCX
+    const TEMPLATE_URL_M = "https://raw.githubusercontent.com/prefeituraigor39-bot/gerador-termos-corref/main/(M)TERMO%20DE%20INSTAURA%C3%87%C3%83O%20E%20DELIBERA%C3%87%C3%83O.docx";
+    const TEMPLATE_URL_F = "https://raw.githubusercontent.com/prefeituraigor39-bot/gerador-termos-corref/main/(F)TERMO%20DE%20INSTAURA%C3%87%C3%83O%20E%20DELIBERA%C3%87%C3%83O.docx";
+
     async function substituirPlaceholdersNoDocx(templateUrl, dados) {
-        // 1. Baixar o template DOCX original
         const response = await fetch(templateUrl);
         if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: Falha ao baixar template. Verifique se a URL está correta.`);
+            throw new Error(`HTTP ${response.status}: Falha ao baixar template.`);
         }
         
         const arrayBuffer = await response.arrayBuffer();
-        
-        // 2. Carregar como ZIP
         const zip = await JSZip.loadAsync(arrayBuffer);
         
-        // 3. Extrair o document.xml (onde fica o texto do documento)
         const docXmlFile = zip.file("word/document.xml");
         if (!docXmlFile) {
             throw new Error("Arquivo word/document.xml não encontrado no DOCX");
@@ -273,41 +283,21 @@
         
         let xmlContent = await docXmlFile.async("string");
         
-        // 4. Substituir os placeholders no XML
-        // Placeholders esperados: {{Nome}}, {{Matricula}}, {{Cargo}}, {{Protocolo}}
-        const placeholders = {
-            "{{Nome}}": dados.nome,
-            "{{Matricula}}": dados.matricula,
-            "{{Cargo}}": dados.cargo,
-            "{{Protocolo}}": dados.protocolo
-        };
-        
-        for (const [placeholder, valor] of Object.entries(placeholders)) {
-            // Escape para regex e substituir globalmente
-            const regex = new RegExp(placeholder.replace(/[{}]/g, '\\$&'), 'g');
-            xmlContent = xmlContent.replace(regex, valor);
-        }
-        
-        // Também substituir variações com espaços
+        // Substituir placeholders
         xmlContent = xmlContent.replace(/{{\s*Nome\s*}}/g, dados.nome);
         xmlContent = xmlContent.replace(/{{\s*Matricula\s*}}/g, dados.matricula);
         xmlContent = xmlContent.replace(/{{\s*Cargo\s*}}/g, dados.cargo);
         xmlContent = xmlContent.replace(/{{\s*Protocolo\s*}}/g, dados.protocolo);
         
-        // 5. Atualizar a data da assinatura digital
+        // Data da assinatura
         const dataAtual = new Date().toLocaleDateString('pt-BR');
         xmlContent = xmlContent.replace(/data da assinatura digital\./g, `Divinópolis, ${dataAtual}.`);
-        xmlContent = xmlContent.replace(/{{Data}}/g, dataAtual);
         
-        // 6. Atualizar o arquivo dentro do ZIP
         zip.file("word/document.xml", xmlContent);
-        
-        // 7. Gerar o novo DOCX
         const novoBlob = await zip.generateAsync({ type: "blob" });
         return novoBlob;
     }
     
-    // Função para download
     function downloadBlob(blob, nomeArquivo) {
         if (typeof saveAs !== 'undefined') {
             saveAs(blob, nomeArquivo);
@@ -323,7 +313,6 @@
         }
     }
     
-    // Elementos DOM
     const nomeInput = document.getElementById('nome');
     const matriculaInput = document.getElementById('matricula');
     const cargoInput = document.getElementById('cargo');
@@ -363,39 +352,26 @@
         
         const templateUrl = genero === 'M' ? TEMPLATE_URL_M : TEMPLATE_URL_F;
         
-        // Verificar se as URLs foram configuradas
-        if (templateUrl.includes('SEU_USUARIO')) {
-            mostrarErro(`⚠️ Configure as URLs dos templates DOCX no código!\n\nEdite as variáveis TEMPLATE_URL_M e TEMPLATE_URL_M com as URLs RAW dos seus arquivos no GitHub.\n\nExemplo:\nhttps://raw.githubusercontent.com/seu-usuario/seu-repo/main/arquivo.docx`);
-            return;
-        }
-        
         mostrarLoading(true);
         
         try {
             const dados = { nome, matricula, cargo, protocolo };
             const novoBlob = await substituirPlaceholdersNoDocx(templateUrl, dados);
             
-            // Nome do arquivo de saída
             const nomeSlug = nome.substring(0, 30).replace(/[^a-z0-9]/gi, '_');
             const prefixo = genero === 'M' ? 'TERMO_READAPTACAO_M' : 'TERMO_READAPTACAO_F';
             const nomeArquivo = `${prefixo}_${nomeSlug}_${protocolo.replace(/[\/\\:]/g, '-')}.docx`;
             
             downloadBlob(novoBlob, nomeArquivo);
-            mostrarSucesso(`✅ Documento gerado com sucesso! O arquivo "${nomeArquivo}" foi baixado mantendo toda formatação original.`);
+            mostrarSucesso(`✅ Documento gerado com sucesso! Mantém toda formatação original.`);
             
         } catch (error) {
-            console.error('Erro detalhado:', error);
-            mostrarErro(`❌ Erro ao processar: ${error.message}\n\nVerifique se:\n1. As URLs dos templates estão corretas\n2. Os arquivos existem no GitHub\n3. O repositório é público`);
+            console.error('Erro:', error);
+            mostrarErro(`❌ Erro: ${error.message}`);
         } finally {
             mostrarLoading(false);
         }
     });
-    
-    // Instruções iniciais
-    console.log('%c📌 CONFIGURAÇÃO NECESSÁRIA:', 'color: #0b3b5f; font-weight: bold; font-size: 14px;');
-    console.log('1. Faça upload dos seus arquivos .docx para o GitHub');
-    console.log('2. Copie as URLs RAW (botão "Raw" ao visualizar o arquivo)');
-    console.log('3. Substitua as variáveis TEMPLATE_URL_M e TEMPLATE_URL_F no código');
 </script>
 </body>
 </html>
