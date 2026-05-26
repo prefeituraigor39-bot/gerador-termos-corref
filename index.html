@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>CORREF - Gerador de Termo de Instauração</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(145deg, #e9f0f5 0%, #d9e2ec 100%);
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            max-width: 880px;
+            width: 100%;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.02);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .header {
+            background: #0b3b5f;
+            padding: 1.6rem 2rem;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header h1 small {
+            font-size: 0.8rem;
+            font-weight: 400;
+            background: #1f5e8e;
+            padding: 4px 12px;
+            border-radius: 40px;
+            margin-left: 8px;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.85;
+            margin-top: 8px;
+        }
+
+        .content {
+            padding: 2rem 2rem 2rem 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.6rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        label {
+            font-weight: 600;
+            color: #1e4663;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        input {
+            padding: 12px 16px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 18px;
+            font-size: 1rem;
+            transition: 0.2s;
+            background: #fefefe;
+            font-family: inherit;
+        }
+
+        input:focus {
+            border-color: #0b5e7e;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(11, 94, 126, 0.2);
+        }
+
+        .radio-group {
+            background: #f8fafc;
+            padding: 0.75rem 1.2rem;
+            border-radius: 28px;
+            border: 1px solid #e2edf2;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1.8rem;
+        }
+
+        .radio-group span {
+            font-weight: 600;
+            color: #1e4663;
+            margin-right: 8px;
+        }
+
+        .radio-option {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #1f3a4b;
+        }
+
+        .radio-option input {
+            width: 18px;
+            height: 18px;
+            accent-color: #0b5e7e;
+            margin: 0;
+            padding: 0;
+        }
+
+        button {
+            background: #0b3b5f;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+            margin-top: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        button:hover {
+            background: #0e4a72;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .preview-area {
+            margin-top: 2rem;
+            border-top: 2px dashed #cbdde9;
+            padding-top: 1.6rem;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .preview-header h3 {
+            color: #0f3b5c;
+            font-weight: 600;
+        }
+
+        .download-btn {
+            background: #2c7a4d;
+            padding: 8px 20px;
+            width: auto;
+            display: inline-flex;
+            margin-top: 0;
+            font-size: 0.85rem;
+            gap: 8px;
+        }
+
+        .download-btn:hover {
+            background: #236b42;
+        }
+
+        .doc-preview {
+            background: #fefdf7;
+            border: 1px solid #cfdee9;
+            border-radius: 24px;
+            padding: 1.4rem;
+            font-family: 'Courier New', 'Times New Roman', monospace;
+            font-size: 0.8rem;
+            max-height: 320px;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: #2c3e4e;
+            line-height: 1.45;
+            box-shadow: inset 0 0 0 1px #fff8, 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .badge {
+            background: #eef2ff;
+            border-radius: 40px;
+            padding: 4px 14px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #0b5e7e;
+        }
+
+        footer {
+            background: #f1f6fa;
+            padding: 1rem 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #5b7a97;
+            border-top: 1px solid #e2edf5;
+        }
+
+        @media (max-width: 680px) {
+            .content {
+                padding: 1.5rem;
+            }
+            .header h1 {
+                font-size: 1.3rem;
+                flex-wrap: wrap;
+            }
+        }
+
+        .helper-text {
+            font-size: 0.7rem;
+            color: #5e7e9e;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="header">
+        <h1>
+            📄 Termo de Instauração e Deliberação
+            <small>CORREF</small>
+        </h1>
+        <p>Preenchimento automático do processo administrativo de readaptação funcional</p>
+    </div>
+    <div class="content">
+        <form id="formTermo">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>👤 Nome completo do servidor(a)</label>
+                    <input type="text" id="nome" placeholder="Ex: JOÃO PEREIRA DA SILVA" required>
+                </div>
+                <div class="form-group">
+                    <label>🆔 Matrícula</label>
+                    <input type="text" id="matricula" placeholder="Nº da matrícula" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>📌 Cargo</label>
+                    <input type="text" id="cargo" placeholder="Ex: Técnico Administrativo" required>
+                </div>
+                <div class="form-group">
+                    <label>📑 Nº do Protocolo (Processo)</label>
+                    <input type="text" id="protocolo" placeholder="Ex: 2025/001234-5" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>⚥ Gênero do servidor (define o modelo do documento)</label>
+                <div class="radio-group">
+                    <span>Modelo:</span>
+                    <label class="radio-option">
+                        <input type="radio" name="genero" value="masculino" checked> 👨‍💼 Servidor (masculino)
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="genero" value="feminino"> 👩‍💼 Servidora (feminino)
+                    </label>
+                </div>
+                <div class="helper-text">* Arquivos base: (F) para feminino e (M) para masculino.</div>
+            </div>
+
+            <button type="button" id="gerarBtn">
+                ✨ Gerar termo preenchido & visualizar
+            </button>
+        </form>
+
+        <div class="preview-area" id="previewArea" style="display: none;">
+            <div class="preview-header">
+                <h3>📄 Pré-visualização do documento gerado</h3>
+                <button id="downloadBtn" class="download-btn">⬇️ Baixar arquivo .DOCX (Microsoft Word)</button>
+            </div>
+            <div class="doc-preview" id="previewContent">
+                <!-- preview do texto será injetado -->
+            </div>
+            <p class="helper-text" style="margin-top: 10px;">✅ O arquivo será gerado com a formatação original do termo oficial.</p>
+        </div>
+    </div>
+    <footer>
+        Comissão de Requalificação e Readaptação Funcional – Divinópolis | Documento oficial automatizado
+    </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.min.js"></script>
+<script>
+    (function() {
+        // Modelo para servidor HOMEM
+        const modeloMasculino = `[TERMO DE INSTAURAÇÃO E DELIBERAÇÃO]
+
+PROCESSO ADMINISTRATIVO DIGITAL DE READAPTAÇÃO FUNCIONAL Nº {{Protocolo}}
+
+A Comissão de Requalificação e Readaptação Funcional (CORREF), em conformidade com suas atribuições regimentais, por meio do presente Termo, instaura o Processo Administrativo Digital de Requalificação e Readaptação Funcional referente ao servidor {{Nome}}, Matrícula nº {{Matricula}}, cargo {{Cargo}} para análise e deliberação.
+
+I. DA INSTAURAÇÃO DO PROCESSO ADMINISTRATIVO DE READAPTAÇÃO FUNCIONAL
+
+Este Termo tem como objetivo primordial a instauração formal do processo administrativo visando à eventual readaptação funcional do servidor {{Nome}}, em conformidade com as prerrogativas e competências atribuídas a esta CORREF. A instauração é motivada pela necessidade de análise da condição funcional do servidor, visando, se for o caso, a sua adequada recolocação ou adaptação às funções, considerando laudos e informações prévias encaminhadas.
+
+II. DAS DELIBERAÇÕES PRELIMINARES
+
+Após a análise inicial dos elementos apresentados, a Comissão deliberou preliminarmente os seguintes encaminhamentos, que se tornam atos obrigatórios para a continuidade do processo:
+
+Determina-se a autuação formal de todos os elementos documentais e informativos previamente encaminhados a esta Comissão, com a finalidade de instruir a abertura do respectivo processo administrativo. Inclui-se nesta autuação a organização dos documentos comprobatórios, relatórios, pareceres e quaisquer outras peças pertinentes que fundamentam a necessidade e a análise do pedido de readaptação funcional do servidor {{Nome}}. A autuação visa a organização e a transparência do processo, assegurando que toda a documentação esteja devidamente registrada para consulta e deliberação futura.
+
+Por ser a expressão da verdade e para que produza seus legais e devidos efeitos, o presente Termo é lavrado e assinado pelos membros da Comissão.
+
+Divinópolis, data da assinatura digital.
+
+(assinado digitalmente)
+IGOR ANDRADE LARA
+
+(assinado digitalmente)
+GUSTAVO VINÍCIUS DE SOUZA SILVA
+
+(assinado digitalmente)
+ISABELA RODRIGUES MESQUITA
+
+(assinado digitalmente)
+MARCUS VINÍCIUS PENIDO SANTANA
+
+(assinado digitalmente)
+MELINA DE MELO SANTOS
+
+(assinado digitalmente)
+RENATA MARIA SILVA OLIVEIRA
+
+(assinado digitalmente)
+VIVIANE DE FÁTIMA ALVES`;
+
+        // Modelo para servidora MULHER
+        const modeloFeminino = `[TERMO DE INSTAURAÇÃO E DELIBERAÇÃO]
+
+PROCESSO ADMINISTRATIVO DIGITAL DE READAPTAÇÃO FUNCIONAL Nº {{Protocolo}}
+
+A Comissão de Requalificação e Readaptação Funcional (CORREF), em conformidade com suas atribuições regimentais, por meio do presente Termo, instaura o Processo Administrativo Digital de Requalificação e Readaptação Funcional referente à servidora {{Nome}}, Matrícula nº {{Matricula}}, cargo {{Cargo}} para análise e deliberação.
+
+I. DA INSTAURAÇÃO DO PROCESSO ADMINISTRATIVO DE READAPTAÇÃO FUNCIONAL
+
+Este Termo tem como objetivo primordial a instauração formal do processo administrativo visando à eventual readaptação funcional da servidora {{Nome}}, em conformidade com as prerrogativas e competências atribuídas a esta CORREF. A instauração é motivada pela necessidade de análise da condição funcional da servidora, visando, se for o caso, a sua adequada recolocação ou adaptação às funções, considerando laudos e informações prévias encaminhadas.
+
+II. DAS DELIBERAÇÕES PRELIMINARES
+
+Após a análise inicial dos elementos apresentados, a Comissão deliberou preliminarmente os seguintes encaminhamentos, que se tornam atos obrigatórios para a continuidade do processo:
+
+Determina-se a autuação formal de todos os elementos documentais e informativos previamente encaminhados a esta Comissão, com a finalidade de instruir a abertura do respectivo processo administrativo. Inclui-se nesta autuação a organização dos documentos comprobatórios, relatórios, pareceres e quaisquer outras peças pertinentes que fundamentam a necessidade e a análise do pedido de readaptação funcional da servidora {{Nome}}. A autuação visa a organização e a transparência do processo, assegurando que toda a documentação esteja devidamente registrada para consulta e deliberação futura.
+
+Por ser a expressão da verdade e para que produza seus legais e devidos efeitos, o presente Termo é lavrado e assinado pelos membros da Comissão.
+
+Divinópolis, data da assinatura digital.
+
+(assinado digitalmente)
+IGOR ANDRADE LARA
+
+(assinado digitalmente)
+GUSTAVO VINÍCIUS DE SOUZA SILVA
+
+(assinado digitalmente)
+ISABELA RODRIGUES MESQUITA
+
+(assinado digitalmente)
+MARCUS VINÍCIUS PENIDO SANTANA
+
+(assinado digitalmente)
+MELINA DE MELO SANTOS
+
+(assinado digitalmente)
+RENATA MARIA SILVA OLIVEIRA
+
+(assinado digitalmente)
+VIVIANE DE FÁTIMA ALVES`;
+
+        function preencherTexto(template, dados) {
+            return template
+                .replace(/{{\s*Protocolo\s*}}/g, dados.protocolo)
+                .replace(/{{\s*Nome\s*}}/g, dados.nome)
+                .replace(/{{\s*Matricula\s*}}/g, dados.matricula)
+                .replace(/{{\s*Cargo\s*}}/g, dados.cargo);
+        }
+
+        async function gerarDocx(textoFinal, nomeArquivo) {
+            const { Document, Packer, Paragraph, TextRun, AlignmentType } = docx;
+            
+            const linhas = textoFinal.split(/\r?\n/);
+            const children = [];
+
+            for (let linha of linhas) {
+                if (linha.trim() === "") {
+                    children.push(new Paragraph({ children: [new TextRun("")], spacing: { after: 80 } }));
+                    continue;
+                }
+                
+                let runs = [];
+                let boldFlag = false;
+                let underlineFlag = false;
+                let alignment = AlignmentType.LEFT;
+                
+                if (linha.includes("TERMO DE INSTAURAÇÃO") || linha.includes("[TERMO")) {
+                    boldFlag = true;
+                    underlineFlag = true;
+                    alignment = AlignmentType.CENTER;
+                } else if (linha.includes("PROCESSO ADMINISTRATIVO DIGITAL")) {
+                    boldFlag = true;
+                    alignment = AlignmentType.CENTER;
+                } else if (linha.match(/^[IVXLCDM]+\.\s/) || linha.match(/^\d+\./)) {
+                    boldFlag = true;
+                } else if (linha.includes("assinado digitalmente") || (linha.match(/^[A-ZÇÃÕÁÉÚ]+ [A-ZÇÃÕÁÉÚ]/) && linha.length < 60)) {
+                    runs.push(new TextRun({ text: linha, bold: false, italics: true, font: "Times New Roman", size: 22 }));
+                    children.push(new Paragraph({ children: runs, alignment: AlignmentType.LEFT, spacing: { after: 80 } }));
+                    continue;
+                }
+                
+                if (underlineFlag) {
+                    runs.push(new TextRun({ text: linha, bold: true, underline: { type: "single" }, font: "Times New Roman", size: 24 }));
+                } else if (boldFlag) {
+                    runs.push(new TextRun({ text: linha, bold: true, font: "Times New Roman", size: 24 }));
+                } else {
+                    runs.push(new TextRun({ text: linha, font: "Times New Roman", size: 24 }));
+                }
+                
+                children.push(new Paragraph({ children: runs, alignment: alignment, spacing: { after: 100 } }));
+            }
+            
+            const doc = new Document({
+                sections: [{
+                    properties: {
+                        page: { margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 } }
+                    },
+                    children: children
+                }]
+            });
+            
+            const blob = await Packer.toBlob(doc);
+            saveAs(blob, nomeArquivo);
+        }
+
+        const nomeInput = document.getElementById('nome');
+        const matriculaInput = document.getElementById('matricula');
+        const cargoInput = document.getElementById('cargo');
+        const protocoloInput = document.getElementById('protocolo');
+        const gerarBtn = document.getElementById('gerarBtn');
+        const previewArea = document.getElementById('previewArea');
+        const previewContent = document.getElementById('previewContent');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        let ultimoTextoGerado = "";
+        let ultimoNomeArquivo = "";
+
+        function gerarDocumento() {
+            const nome = nomeInput.value.trim();
+            const matricula = matriculaInput.value.trim();
+            const cargo = cargoInput.value.trim();
+            const protocolo = protocoloInput.value.trim();
+
+            if (!nome || !matricula || !cargo || !protocolo) {
+                alert("Preencha todos os campos!");
+                return false;
+            }
+
+            const genero = document.querySelector('input[name="genero"]:checked').value;
+            const template = genero === 'masculino' ? modeloMasculino : modeloFeminino;
+            const dados = { nome, matricula, cargo, protocolo };
+            let textoFinal = preencherTexto(template, dados);
+            
+            const hoje = new Date().toLocaleDateString('pt-BR');
+            textoFinal = textoFinal.replace(/data da assinatura digital\./g, `Divinópolis, ${hoje}.`);
+            
+            ultimoTextoGerado = textoFinal;
+            
+            const nomeSlug = nome.substring(0, 30).replace(/[^a-z0-9]/gi, '_');
+            const prefixo = genero === 'masculino' ? 'TERMO_M' : 'TERMO_F';
+            ultimoNomeArquivo = `${prefixo}_${nomeSlug}_${protocolo.replace(/[\/\\]/g, '-')}.docx`;
+            
+            previewContent.innerText = textoFinal;
+            previewArea.style.display = 'block';
+            return true;
+        }
+
+        function baixarWord() {
+            if (!ultimoTextoGerado) {
+                alert("Gere o termo primeiro!");
+                return;
+            }
+            gerarDocx(ultimoTextoGerado, ultimoNomeArquivo);
+        }
+
+        gerarBtn.addEventListener('click', () => {
+            if (gerarDocumento()) {
+                previewArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+        
+        downloadBtn.addEventListener('click', baixarWord);
+    })();
+</script>
+</body>
+</html>
