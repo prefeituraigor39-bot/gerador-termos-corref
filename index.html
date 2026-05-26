@@ -2,124 +2,87 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>CORREF - Gerador de Termo de Instauração</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORREF - Substituição em DOCX Original</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            font-family: 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(145deg, #e9f0f5 0%, #d9e2ec 100%);
             min-height: 100vh;
             padding: 2rem 1.5rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .card {
-            max-width: 880px;
-            width: 100%;
+            max-width: 900px;
             margin: 0 auto;
-            background: #ffffff;
+            background: white;
             border-radius: 2rem;
-            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.2);
             overflow: hidden;
         }
 
         .header {
             background: #0b3b5f;
-            padding: 1.6rem 2rem;
             color: white;
+            padding: 1.6rem 2rem;
         }
 
         .header h1 {
-            font-size: 1.75rem;
-            font-weight: 600;
+            font-size: 1.6rem;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
         .header h1 small {
-            font-size: 0.8rem;
-            font-weight: 400;
+            font-size: 0.75rem;
             background: #1f5e8e;
             padding: 4px 12px;
             border-radius: 40px;
         }
 
-        .header p {
-            font-size: 0.9rem;
-            opacity: 0.85;
-            margin-top: 8px;
-        }
+        .content { padding: 2rem; }
 
-        .content {
-            padding: 2rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.6rem;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.2rem;
-            margin-bottom: 1.2rem;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-            margin-bottom: 0;
-        }
+        .form-group { margin-bottom: 1.3rem; }
+        .form-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .form-row .form-group { flex: 1; }
 
         label {
+            display: block;
             font-weight: 600;
             color: #1e4663;
             margin-bottom: 6px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
         }
 
         input {
+            width: 100%;
             padding: 12px 16px;
-            border: 1.5px solid #cbd5e1;
-            border-radius: 18px;
-            font-size: 1rem;
-            transition: 0.2s;
-            background: #fefefe;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
         }
 
         input:focus {
-            border-color: #0b5e7e;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(11, 94, 126, 0.2);
+            border-color: #0b3b5f;
+            box-shadow: 0 0 0 3px rgba(11, 59, 95, 0.1);
         }
 
         .radio-group {
             background: #f8fafc;
-            padding: 0.75rem 1.2rem;
-            border-radius: 28px;
-            border: 1px solid #e2edf2;
+            padding: 0.8rem 1.2rem;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
             display: flex;
-            flex-wrap: wrap;
+            gap: 1.5rem;
             align-items: center;
-            gap: 1.8rem;
-        }
-
-        .radio-group span {
-            font-weight: 600;
-            color: #1e4663;
+            flex-wrap: wrap;
         }
 
         .radio-option {
@@ -127,116 +90,84 @@
             align-items: center;
             gap: 8px;
             cursor: pointer;
-            font-weight: 500;
-            color: #1f3a4b;
-        }
-
-        .radio-option input {
-            width: 18px;
-            height: 18px;
-            accent-color: #0b5e7e;
-            margin: 0;
-            padding: 0;
         }
 
         button {
             background: #0b3b5f;
             color: white;
             border: none;
-            padding: 14px 28px;
+            padding: 14px 24px;
             font-size: 1rem;
             font-weight: 600;
             border-radius: 40px;
             cursor: pointer;
             width: 100%;
-            margin-top: 12px;
+            margin-top: 10px;
             transition: 0.2s;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         button:hover {
             background: #0e4a72;
             transform: translateY(-2px);
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
         }
 
-        .preview-area {
-            margin-top: 2rem;
-            border-top: 2px dashed #cbdde9;
-            padding-top: 1.6rem;
-        }
-
-        .preview-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .preview-header h3 {
-            color: #0f3b5c;
-            font-weight: 600;
-        }
-
-        .download-btn {
+        .btn-secondary {
             background: #2c7a4d;
-            padding: 8px 20px;
-            width: auto;
-            display: inline-flex;
             margin-top: 0;
         }
 
-        .download-btn:hover {
-            background: #236b42;
-        }
-
-        .doc-preview {
-            background: #fefdf7;
-            border: 1px solid #cfdee9;
-            border-radius: 24px;
-            padding: 1.4rem;
-            font-family: 'Courier New', monospace;
-            font-size: 0.75rem;
-            max-height: 320px;
-            overflow: auto;
-            white-space: pre-wrap;
-            color: #2c3e4e;
-            line-height: 1.45;
-        }
-
         .loading {
-            opacity: 0.6;
-            pointer-events: none;
+            text-align: center;
+            padding: 20px;
+            color: #0b5e7e;
+            display: none;
+        }
+
+        .loading.show { display: block; }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .error.show { display: block; }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .success.show { display: block; }
+
+        .info-box {
+            background: #e7f3ff;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: #0b5e7e;
+            border-left: 4px solid #0b3b5f;
         }
 
         footer {
             background: #f1f6fa;
             padding: 1rem 2rem;
             text-align: center;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #5b7a97;
             border-top: 1px solid #e2edf5;
-        }
-
-        .success-msg {
-            background: #d4edda;
-            color: #155724;
-            padding: 10px 15px;
-            border-radius: 12px;
-            margin-top: 15px;
-            font-size: 0.85rem;
-            display: none;
-        }
-
-        @media (max-width: 680px) {
-            .content {
-                padding: 1.5rem;
-            }
         }
     </style>
 </head>
@@ -247,9 +178,15 @@
             📄 Termo de Instauração e Deliberação
             <small>CORREF</small>
         </h1>
-        <p>Preenchimento automático - Gera arquivo DOCX com formatação original</p>
+        <p style="margin-top: 8px;">Edição direta do arquivo DOCX original - preserva toda formatação</p>
     </div>
     <div class="content">
+        <div class="info-box">
+            🔧 <strong>Como funciona:</strong> O sistema pega o arquivo DOCX original (que já tem a formatação correta),
+            substitui os placeholders <code>{{Nome}}</code>, <code>{{Matricula}}</code>, etc., e gera um novo documento
+            mantendo TODOS os estilos, margens, fontes e assinaturas originais.
+        </div>
+
         <div class="form-row">
             <div class="form-group">
                 <label>👤 Nome completo</label>
@@ -260,6 +197,7 @@
                 <input type="text" id="matricula" placeholder="Nº da matrícula" value="123456-7">
             </div>
         </div>
+
         <div class="form-row">
             <div class="form-group">
                 <label>📌 Cargo</label>
@@ -274,191 +212,106 @@
         <div class="form-group">
             <label>⚥ Modelo do documento</label>
             <div class="radio-group">
-                <span>Gênero:</span>
                 <label class="radio-option">
-                    <input type="radio" name="genero" value="M" checked> 👨‍💼 Servidor (M)
+                    <input type="radio" name="genero" value="M" checked> 👨‍💼 Servidor (modelo M)
                 </label>
                 <label class="radio-option">
-                    <input type="radio" name="genero" value="F"> 👩‍💼 Servidora (F)
+                    <input type="radio" name="genero" value="F"> 👩‍💼 Servidora (modelo F)
                 </label>
             </div>
         </div>
 
         <button id="gerarBtn">
-            ✨ Gerar Termo e Baixar DOCX
+            📄 Gerar DOCX substituindo placeholders
         </button>
 
-        <div id="successMsg" class="success-msg"></div>
-
-        <div class="preview-area" id="previewArea" style="display: none;">
-            <div class="preview-header">
-                <h3>📄 Prévia do texto gerado</h3>
-                <button id="downloadBtn" class="download-btn">⬇️ Baixar DOCX novamente</button>
-            </div>
-            <div class="doc-preview" id="previewContent"></div>
+        <div id="loadingMsg" class="loading">
+            <span>⏳</span> Processando arquivo DOCX original...
         </div>
+        <div id="errorMsg" class="error"></div>
+        <div id="successMsg" class="success"></div>
     </div>
     <footer>
-        Comissão de Requalificação e Readaptação Funcional – Divinópolis
+        Comissão de Requalificação e Readaptação Funcional – Divinópolis<br>
+        Os placeholders {{Nome}}, {{Matricula}}, {{Cargo}}, {{Protocolo}} são substituídos mantendo a formatação original.
     </footer>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
 <script>
-    // Modelos completos (texto puro para gerar o DOCX)
-    const modeloMasculino = `[TERMO DE INSTAURAÇÃO E DELIBERAÇÃO]
-
-PROCESSO ADMINISTRATIVO DIGITAL DE READAPTAÇÃO FUNCIONAL Nº {{Protocolo}}
-
-A Comissão de Requalificação e Readaptação Funcional (CORREF), em conformidade com suas atribuições regimentais, por meio do presente Termo, instaura o Processo Administrativo Digital de Requalificação e Readaptação Funcional referente ao servidor {{Nome}}, Matrícula nº {{Matricula}}, cargo {{Cargo}} para análise e deliberação.
-
-I. DA INSTAURAÇÃO DO PROCESSO ADMINISTRATIVO DE READAPTAÇÃO FUNCIONAL
-
-Este Termo tem como objetivo primordial a instauração formal do processo administrativo visando à eventual readaptação funcional do servidor {{Nome}}, em conformidade com as prerrogativas e competências atribuídas a esta CORREF. A instauração é motivada pela necessidade de análise da condição funcional do servidor, visando, se for o caso, a sua adequada recolocação ou adaptação às funções, considerando laudos e informações prévias encaminhadas.
-
-II. DAS DELIBERAÇÕES PRELIMINARES
-
-Após a análise inicial dos elementos apresentados, a Comissão deliberou preliminarmente os seguintes encaminhamentos, que se tornam atos obrigatórios para a continuidade do processo:
-
-Determina-se a autuação formal de todos os elementos documentais e informativos previamente encaminhados a esta Comissão, com a finalidade de instruir a abertura do respectivo processo administrativo. Inclui-se nesta autuação a organização dos documentos comprobatórios, relatórios, pareceres e quaisquer outras peças pertinentes que fundamentam a necessidade e a análise do pedido de readaptação funcional do servidor {{Nome}}. A autuação visa a organização e a transparência do processo, assegurando que toda a documentação esteja devidamente registrada para consulta e deliberação futura.
-
-Por ser a expressão da verdade e para que produza seus legais e devidos efeitos, o presente Termo é lavrado e assinado pelos membros da Comissão.
-
-Divinópolis, {{Data}}
-
-(assinado digitalmente)
-IGOR ANDRADE LARA
-
-(assinado digitalmente)
-GUSTAVO VINÍCIUS DE SOUZA SILVA
-
-(assinado digitalmente)
-ISABELA RODRIGUES MESQUITA
-
-(assinado digitalmente)
-MARCUS VINÍCIUS PENIDO SANTANA
-
-(assinado digitalmente)
-MELINA DE MELO SANTOS
-
-(assinado digitalmente)
-RENATA MARIA SILVA OLIVEIRA
-
-(assinado digitalmente)
-VIVIANE DE FÁTIMA ALVES`;
-
-    const modeloFeminino = `[TERMO DE INSTAURAÇÃO E DELIBERAÇÃO]
-
-PROCESSO ADMINISTRATIVO DIGITAL DE READAPTAÇÃO FUNCIONAL Nº {{Protocolo}}
-
-A Comissão de Requalificação e Readaptação Funcional (CORREF), em conformidade com suas atribuições regimentais, por meio do presente Termo, instaura o Processo Administrativo Digital de Requalificação e Readaptação Funcional referente à servidora {{Nome}}, Matrícula nº {{Matricula}}, cargo {{Cargo}} para análise e deliberação.
-
-I. DA INSTAURAÇÃO DO PROCESSO ADMINISTRATIVO DE READAPTAÇÃO FUNCIONAL
-
-Este Termo tem como objetivo primordial a instauração formal do processo administrativo visando à eventual readaptação funcional da servidora {{Nome}}, em conformidade com as prerrogativas e competências atribuídas a esta CORREF. A instauração é motivada pela necessidade de análise da condição funcional da servidora, visando, se for o caso, a sua adequada recolocação ou adaptação às funções, considerando laudos e informações prévias encaminhadas.
-
-II. DAS DELIBERAÇÕES PRELIMINARES
-
-Após a análise inicial dos elementos apresentados, a Comissão deliberou preliminarmente os seguintes encaminhamentos, que se tornam atos obrigatórios para a continuidade do processo:
-
-Determina-se a autuação formal de todos os elementos documentais e informativos previamente encaminhados a esta Comissão, com a finalidade de instruir a abertura do respectivo processo administrativo. Inclui-se nesta autuação a organização dos documentos comprobatórios, relatórios, pareceres e quaisquer outras peças pertinentes que fundamentam a necessidade e a análise do pedido de readaptação funcional da servidora {{Nome}}. A autuação visa a organização e a transparência do processo, assegurando que toda a documentação esteja devidamente registrada para consulta e deliberação futura.
-
-Por ser a expressão da verdade e para que produza seus legais e devidos efeitos, o presente Termo é lavrado e assinado pelos membros da Comissão.
-
-Divinópolis, {{Data}}
-
-(assinado digitalmente)
-IGOR ANDRADE LARA
-
-(assinado digitalmente)
-GUSTAVO VINÍCIUS DE SOUZA SILVA
-
-(assinado digitalmente)
-ISABELA RODRIGUES MESQUITA
-
-(assinado digitalmente)
-MARCUS VINÍCIUS PENIDO SANTANA
-
-(assinado digitalmente)
-MELINA DE MELO SANTOS
-
-(assinado digitalmente)
-RENATA MARIA SILVA OLIVEIRA
-
-(assinado digitalmente)
-VIVIANE DE FÁTIMA ALVES`;
-
-    // Função para preencher os placeholders
-    function preencherTemplate(genero, dados) {
-        const template = genero === 'M' ? modeloMasculino : modeloFeminino;
-        let resultado = template
-            .replace(/{{Protocolo}}/g, dados.protocolo)
-            .replace(/{{Nome}}/g, dados.nome)
-            .replace(/{{Matricula}}/g, dados.matricula)
-            .replace(/{{Cargo}}/g, dados.cargo)
-            .replace(/{{Data}}/g, dados.data);
+    // ============================================
+    // URLs dos templates DOCX originais (substitua pelas suas)
+    // IMPORTANTE: Faça upload dos seus arquivos .docx para o GitHub
+    // e coloque as URLs RAW aqui:
+    // ============================================
+    const TEMPLATE_URL_M = "https://raw.githubusercontent.com/SEU_USUARIO/SEU_REPOSITORIO/main/(M)TERMO_DE_INSTAuRACAO_E_DELIBERACAO.docx";
+    const TEMPLATE_URL_F = "https://raw.githubusercontent.com/SEU_USUARIO/SEU_REPOSITORIO/main/(F)TERMO_DE_INSTAuRACAO_E_DELIBERACAO.docx";
+    
+    // Como fallback, se você não tiver os arquivos no GitHub ainda,
+    // usei URLs placeholder - você precisa substituir!
+    
+    // Função para substituir placeholders no XML do DOCX
+    async function substituirPlaceholdersNoDocx(templateUrl, dados) {
+        // 1. Baixar o template DOCX original
+        const response = await fetch(templateUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: Falha ao baixar template. Verifique se a URL está correta.`);
+        }
         
-        return resultado;
-    }
-
-    // Função para gerar o arquivo DOCX (usando abordagem mais simples e confiável)
-    function gerarDOCX(conteudoTexto, nomeArquivo) {
-        // Criar um blob com o conteúdo em formato RTF/DOCX simples
-        // Vamos usar HTML com formatação que o Word reconhece perfeitamente
+        const arrayBuffer = await response.arrayBuffer();
         
+        // 2. Carregar como ZIP
+        const zip = await JSZip.loadAsync(arrayBuffer);
+        
+        // 3. Extrair o document.xml (onde fica o texto do documento)
+        const docXmlFile = zip.file("word/document.xml");
+        if (!docXmlFile) {
+            throw new Error("Arquivo word/document.xml não encontrado no DOCX");
+        }
+        
+        let xmlContent = await docXmlFile.async("string");
+        
+        // 4. Substituir os placeholders no XML
+        // Placeholders esperados: {{Nome}}, {{Matricula}}, {{Cargo}}, {{Protocolo}}
+        const placeholders = {
+            "{{Nome}}": dados.nome,
+            "{{Matricula}}": dados.matricula,
+            "{{Cargo}}": dados.cargo,
+            "{{Protocolo}}": dados.protocolo
+        };
+        
+        for (const [placeholder, valor] of Object.entries(placeholders)) {
+            // Escape para regex e substituir globalmente
+            const regex = new RegExp(placeholder.replace(/[{}]/g, '\\$&'), 'g');
+            xmlContent = xmlContent.replace(regex, valor);
+        }
+        
+        // Também substituir variações com espaços
+        xmlContent = xmlContent.replace(/{{\s*Nome\s*}}/g, dados.nome);
+        xmlContent = xmlContent.replace(/{{\s*Matricula\s*}}/g, dados.matricula);
+        xmlContent = xmlContent.replace(/{{\s*Cargo\s*}}/g, dados.cargo);
+        xmlContent = xmlContent.replace(/{{\s*Protocolo\s*}}/g, dados.protocolo);
+        
+        // 5. Atualizar a data da assinatura digital
         const dataAtual = new Date().toLocaleDateString('pt-BR');
+        xmlContent = xmlContent.replace(/data da assinatura digital\./g, `Divinópolis, ${dataAtual}.`);
+        xmlContent = xmlContent.replace(/{{Data}}/g, dataAtual);
         
-        // Criar um documento HTML formatado que o Word abre perfeitamente
-        const htmlContent = `<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Termo de Instauração - ${nomeArquivo}</title>
-<style>
-    body {
-        font-family: 'Times New Roman', Times, serif;
-        font-size: 12pt;
-        margin: 2.5cm 2cm;
-        line-height: 1.4;
-    }
-    .title {
-        text-align: center;
-        font-weight: bold;
-        text-decoration: underline;
-        font-size: 14pt;
-        margin-bottom: 20px;
-    }
-    .center {
-        text-align: center;
-    }
-    .bold {
-        font-weight: bold;
-    }
-    .signature {
-        margin-top: 5px;
-        font-style: italic;
-    }
-    p {
-        margin: 0 0 8px 0;
-    }
-    .section {
-        margin-top: 15px;
-    }
-</style>
-</head>
-<body>
-<pre style="font-family: 'Times New Roman', Times, serif; font-size: 12pt; white-space: pre-wrap; word-wrap: break-word; margin: 0;">${conteudoTexto}</pre>
-</body>
-</html>`;
+        // 6. Atualizar o arquivo dentro do ZIP
+        zip.file("word/document.xml", xmlContent);
         
-        // Converter para Blob como application/msword
-        const blob = new Blob([htmlContent], { type: 'application/msword' });
-        
-        // Forçar download usando FileSaver ou fallback
+        // 7. Gerar o novo DOCX
+        const novoBlob = await zip.generateAsync({ type: "blob" });
+        return novoBlob;
+    }
+    
+    // Função para download
+    function downloadBlob(blob, nomeArquivo) {
         if (typeof saveAs !== 'undefined') {
             saveAs(blob, nomeArquivo);
         } else {
-            // Fallback para navegadores sem FileSaver
             const link = document.createElement('a');
             const url = URL.createObjectURL(blob);
             link.href = url;
@@ -468,25 +321,35 @@ VIVIANE DE FÁTIMA ALVES`;
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
         }
-        
-        return true;
     }
-
-    // DOM elements
+    
+    // Elementos DOM
     const nomeInput = document.getElementById('nome');
     const matriculaInput = document.getElementById('matricula');
     const cargoInput = document.getElementById('cargo');
     const protocoloInput = document.getElementById('protocolo');
     const gerarBtn = document.getElementById('gerarBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const previewArea = document.getElementById('previewArea');
-    const previewContent = document.getElementById('previewContent');
+    const loadingMsg = document.getElementById('loadingMsg');
+    const errorMsg = document.getElementById('errorMsg');
     const successMsg = document.getElementById('successMsg');
-
-    let ultimoTexto = '';
-    let ultimoNomeArquivo = '';
-
-    function gerarTextoCompleto() {
+    
+    function mostrarLoading(show) {
+        loadingMsg.classList.toggle('show', show);
+    }
+    
+    function mostrarErro(mensagem) {
+        errorMsg.textContent = mensagem;
+        errorMsg.classList.add('show');
+        setTimeout(() => errorMsg.classList.remove('show'), 5000);
+    }
+    
+    function mostrarSucesso(mensagem) {
+        successMsg.textContent = mensagem;
+        successMsg.classList.add('show');
+        setTimeout(() => successMsg.classList.remove('show'), 4000);
+    }
+    
+    gerarBtn.addEventListener('click', async () => {
         const nome = nomeInput.value.trim();
         const matricula = matriculaInput.value.trim();
         const cargo = cargoInput.value.trim();
@@ -494,78 +357,45 @@ VIVIANE DE FÁTIMA ALVES`;
         const genero = document.querySelector('input[name="genero"]:checked').value;
         
         if (!nome || !matricula || !cargo || !protocolo) {
-            alert('❌ Preencha todos os campos!');
-            return null;
+            mostrarErro('❌ Preencha todos os campos!');
+            return;
         }
         
-        const dataHoje = new Date().toLocaleDateString('pt-BR');
-        const dados = {
-            nome: nome,
-            matricula: matricula,
-            cargo: cargo,
-            protocolo: protocolo,
-            data: dataHoje
-        };
+        const templateUrl = genero === 'M' ? TEMPLATE_URL_M : TEMPLATE_URL_F;
         
-        const textoFinal = preencherTemplate(genero, dados);
+        // Verificar se as URLs foram configuradas
+        if (templateUrl.includes('SEU_USUARIO')) {
+            mostrarErro(`⚠️ Configure as URLs dos templates DOCX no código!\n\nEdite as variáveis TEMPLATE_URL_M e TEMPLATE_URL_M com as URLs RAW dos seus arquivos no GitHub.\n\nExemplo:\nhttps://raw.githubusercontent.com/seu-usuario/seu-repo/main/arquivo.docx`);
+            return;
+        }
         
-        // Gerar nome do arquivo
-        const nomeSlug = nome.substring(0, 30).replace(/[^a-z0-9]/gi, '_');
-        const prefixo = genero === 'M' ? 'TERMO_READAPTACAO_M' : 'TERMO_READAPTACAO_F';
-        const nomeArquivo = `${prefixo}_${nomeSlug}_${protocolo.replace(/[\/\\:]/g, '-')}.docx`;
+        mostrarLoading(true);
         
-        return { texto: textoFinal, arquivo: nomeArquivo };
-    }
-
-    function exibirPreview(texto) {
-        previewContent.innerText = texto;
-        previewArea.style.display = 'block';
-        previewArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-
-    function mostrarMensagemSucesso(mensagem) {
-        successMsg.textContent = mensagem;
-        successMsg.style.display = 'block';
-        setTimeout(() => {
-            successMsg.style.display = 'none';
-        }, 4000);
-    }
-
-    // Evento do botão gerar + baixar
-    gerarBtn.addEventListener('click', () => {
-        const resultado = gerarTextoCompleto();
-        if (!resultado) return;
-        
-        ultimoTexto = resultado.texto;
-        ultimoNomeArquivo = resultado.arquivo;
-        
-        // Exibir preview
-        exibirPreview(ultimoTexto);
-        
-        // Tentar baixar o arquivo
         try {
-            gerarDOCX(ultimoTexto, ultimoNomeArquivo);
-            mostrarMensagemSucesso('✅ Documento gerado e baixado com sucesso! O arquivo mantém toda a formatação original.');
+            const dados = { nome, matricula, cargo, protocolo };
+            const novoBlob = await substituirPlaceholdersNoDocx(templateUrl, dados);
+            
+            // Nome do arquivo de saída
+            const nomeSlug = nome.substring(0, 30).replace(/[^a-z0-9]/gi, '_');
+            const prefixo = genero === 'M' ? 'TERMO_READAPTACAO_M' : 'TERMO_READAPTACAO_F';
+            const nomeArquivo = `${prefixo}_${nomeSlug}_${protocolo.replace(/[\/\\:]/g, '-')}.docx`;
+            
+            downloadBlob(novoBlob, nomeArquivo);
+            mostrarSucesso(`✅ Documento gerado com sucesso! O arquivo "${nomeArquivo}" foi baixado mantendo toda formatação original.`);
+            
         } catch (error) {
-            console.error('Erro:', error);
-            alert('❌ Erro ao gerar o arquivo. Tente novamente.');
+            console.error('Erro detalhado:', error);
+            mostrarErro(`❌ Erro ao processar: ${error.message}\n\nVerifique se:\n1. As URLs dos templates estão corretas\n2. Os arquivos existem no GitHub\n3. O repositório é público`);
+        } finally {
+            mostrarLoading(false);
         }
     });
     
-    // Botão de baixar novamente (se precisar)
-    if (downloadBtn) {
-        downloadBtn.addEventListener('click', () => {
-            if (ultimoTexto && ultimoNomeArquivo) {
-                gerarDOCX(ultimoTexto, ultimoNomeArquivo);
-                mostrarMensagemSucesso('✅ Download reiniciado!');
-            } else {
-                alert('Nenhum documento gerado ainda. Clique em "Gerar Termo" primeiro.');
-            }
-        });
-    }
-    
-    // Placeholder visual para exemplo
-    console.log('Sistema pronto - Gera DOCX com formatação original!');
+    // Instruções iniciais
+    console.log('%c📌 CONFIGURAÇÃO NECESSÁRIA:', 'color: #0b3b5f; font-weight: bold; font-size: 14px;');
+    console.log('1. Faça upload dos seus arquivos .docx para o GitHub');
+    console.log('2. Copie as URLs RAW (botão "Raw" ao visualizar o arquivo)');
+    console.log('3. Substitua as variáveis TEMPLATE_URL_M e TEMPLATE_URL_F no código');
 </script>
 </body>
 </html>
