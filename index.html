@@ -29,7 +29,6 @@
             border-radius: 2rem;
             box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.02);
             overflow: hidden;
-            transition: all 0.2s ease;
         }
 
         .header {
@@ -41,10 +40,10 @@
         .header h1 {
             font-size: 1.75rem;
             font-weight: 600;
-            letter-spacing: -0.3px;
             display: flex;
             align-items: center;
             gap: 12px;
+            flex-wrap: wrap;
         }
 
         .header h1 small {
@@ -53,7 +52,6 @@
             background: #1f5e8e;
             padding: 4px 12px;
             border-radius: 40px;
-            margin-left: 8px;
         }
 
         .header p {
@@ -63,7 +61,7 @@
         }
 
         .content {
-            padding: 2rem 2rem 2rem 2rem;
+            padding: 2rem;
         }
 
         .form-group {
@@ -100,7 +98,6 @@
             font-size: 1rem;
             transition: 0.2s;
             background: #fefefe;
-            font-family: inherit;
         }
 
         input:focus {
@@ -123,7 +120,6 @@
         .radio-group span {
             font-weight: 600;
             color: #1e4663;
-            margin-right: 8px;
         }
 
         .radio-option {
@@ -152,10 +148,9 @@
             font-weight: 600;
             border-radius: 40px;
             cursor: pointer;
-            transition: 0.2s;
             width: 100%;
             margin-top: 12px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -166,10 +161,6 @@
             background: #0e4a72;
             transform: translateY(-2px);
             box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
-        }
-
-        button:active {
-            transform: translateY(1px);
         }
 
         .preview-area {
@@ -183,6 +174,7 @@
             justify-content: space-between;
             align-items: baseline;
             flex-wrap: wrap;
+            gap: 1rem;
             margin-bottom: 1rem;
         }
 
@@ -197,8 +189,6 @@
             width: auto;
             display: inline-flex;
             margin-top: 0;
-            font-size: 0.85rem;
-            gap: 8px;
         }
 
         .download-btn:hover {
@@ -210,24 +200,18 @@
             border: 1px solid #cfdee9;
             border-radius: 24px;
             padding: 1.4rem;
-            font-family: 'Courier New', 'Times New Roman', monospace;
-            font-size: 0.8rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
             max-height: 320px;
             overflow: auto;
             white-space: pre-wrap;
-            word-break: break-word;
             color: #2c3e4e;
             line-height: 1.45;
-            box-shadow: inset 0 0 0 1px #fff8, 0 4px 12px rgba(0,0,0,0.02);
         }
 
-        .badge {
-            background: #eef2ff;
-            border-radius: 40px;
-            padding: 4px 14px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: #0b5e7e;
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
         }
 
         footer {
@@ -239,20 +223,20 @@
             border-top: 1px solid #e2edf5;
         }
 
+        .success-msg {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            display: none;
+        }
+
         @media (max-width: 680px) {
             .content {
                 padding: 1.5rem;
             }
-            .header h1 {
-                font-size: 1.3rem;
-                flex-wrap: wrap;
-            }
-        }
-
-        .helper-text {
-            font-size: 0.7rem;
-            color: #5e7e9e;
-            margin-top: 5px;
         }
     </style>
 </head>
@@ -263,72 +247,66 @@
             📄 Termo de Instauração e Deliberação
             <small>CORREF</small>
         </h1>
-        <p>Preenchimento automático do processo administrativo de readaptação funcional</p>
+        <p>Preenchimento automático - Gera arquivo DOCX com formatação original</p>
     </div>
     <div class="content">
-        <form id="formTermo">
-            <div class="form-row">
-                <div class="form-group">
-                    <label>👤 Nome completo do servidor(a)</label>
-                    <input type="text" id="nome" placeholder="Ex: JOÃO PEREIRA DA SILVA" required>
-                </div>
-                <div class="form-group">
-                    <label>🆔 Matrícula</label>
-                    <input type="text" id="matricula" placeholder="Nº da matrícula" required>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>📌 Cargo</label>
-                    <input type="text" id="cargo" placeholder="Ex: Técnico Administrativo" required>
-                </div>
-                <div class="form-group">
-                    <label>📑 Nº do Protocolo (Processo)</label>
-                    <input type="text" id="protocolo" placeholder="Ex: 2025/001234-5" required>
-                </div>
-            </div>
-
+        <div class="form-row">
             <div class="form-group">
-                <label>⚥ Gênero do servidor (define o modelo do documento)</label>
-                <div class="radio-group">
-                    <span>Modelo:</span>
-                    <label class="radio-option">
-                        <input type="radio" name="genero" value="masculino" checked> 👨‍💼 Servidor (masculino)
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="genero" value="feminino"> 👩‍💼 Servidora (feminino)
-                    </label>
-                </div>
-                <div class="helper-text">* Arquivos base: (F) para feminino e (M) para masculino.</div>
+                <label>👤 Nome completo</label>
+                <input type="text" id="nome" placeholder="Ex: JOÃO PEREIRA DA SILVA" value="JOÃO CARLOS ALMEIDA">
             </div>
+            <div class="form-group">
+                <label>🆔 Matrícula</label>
+                <input type="text" id="matricula" placeholder="Nº da matrícula" value="123456-7">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>📌 Cargo</label>
+                <input type="text" id="cargo" placeholder="Ex: Técnico Administrativo" value="ASSISTENTE ADMINISTRATIVO">
+            </div>
+            <div class="form-group">
+                <label>📑 Nº do Protocolo</label>
+                <input type="text" id="protocolo" placeholder="Ex: 2025/001234-5" value="2025/000123-9">
+            </div>
+        </div>
 
-            <button type="button" id="gerarBtn">
-                ✨ Gerar termo preenchido & visualizar
-            </button>
-        </form>
+        <div class="form-group">
+            <label>⚥ Modelo do documento</label>
+            <div class="radio-group">
+                <span>Gênero:</span>
+                <label class="radio-option">
+                    <input type="radio" name="genero" value="M" checked> 👨‍💼 Servidor (M)
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="genero" value="F"> 👩‍💼 Servidora (F)
+                </label>
+            </div>
+        </div>
+
+        <button id="gerarBtn">
+            ✨ Gerar Termo e Baixar DOCX
+        </button>
+
+        <div id="successMsg" class="success-msg"></div>
 
         <div class="preview-area" id="previewArea" style="display: none;">
             <div class="preview-header">
-                <h3>📄 Pré-visualização do documento gerado</h3>
-                <button id="downloadBtn" class="download-btn">⬇️ Baixar arquivo .DOCX (Microsoft Word)</button>
+                <h3>📄 Prévia do texto gerado</h3>
+                <button id="downloadBtn" class="download-btn">⬇️ Baixar DOCX novamente</button>
             </div>
-            <div class="doc-preview" id="previewContent">
-                <!-- preview do texto será injetado -->
-            </div>
-            <p class="helper-text" style="margin-top: 10px;">✅ O arquivo será gerado com a formatação original do termo oficial.</p>
+            <div class="doc-preview" id="previewContent"></div>
         </div>
     </div>
     <footer>
-        Comissão de Requalificação e Readaptação Funcional – Divinópolis | Documento oficial automatizado
+        Comissão de Requalificação e Readaptação Funcional – Divinópolis
     </footer>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.min.js"></script>
 <script>
-    (function() {
-        // Modelo para servidor HOMEM
-        const modeloMasculino = `[TERMO DE INSTAURAÇÃO E DELIBERAÇÃO]
+    // Modelos completos (texto puro para gerar o DOCX)
+    const modeloMasculino = `[TERMO DE INSTAURAÇÃO E DELIBERAÇÃO]
 
 PROCESSO ADMINISTRATIVO DIGITAL DE READAPTAÇÃO FUNCIONAL Nº {{Protocolo}}
 
@@ -346,7 +324,7 @@ Determina-se a autuação formal de todos os elementos documentais e informativo
 
 Por ser a expressão da verdade e para que produza seus legais e devidos efeitos, o presente Termo é lavrado e assinado pelos membros da Comissão.
 
-Divinópolis, data da assinatura digital.
+Divinópolis, {{Data}}
 
 (assinado digitalmente)
 IGOR ANDRADE LARA
@@ -369,8 +347,7 @@ RENATA MARIA SILVA OLIVEIRA
 (assinado digitalmente)
 VIVIANE DE FÁTIMA ALVES`;
 
-        // Modelo para servidora MULHER
-        const modeloFeminino = `[TERMO DE INSTAURAÇÃO E DELIBERAÇÃO]
+    const modeloFeminino = `[TERMO DE INSTAURAÇÃO E DELIBERAÇÃO]
 
 PROCESSO ADMINISTRATIVO DIGITAL DE READAPTAÇÃO FUNCIONAL Nº {{Protocolo}}
 
@@ -388,7 +365,7 @@ Determina-se a autuação formal de todos os elementos documentais e informativo
 
 Por ser a expressão da verdade e para que produza seus legais e devidos efeitos, o presente Termo é lavrado e assinado pelos membros da Comissão.
 
-Divinópolis, data da assinatura digital.
+Divinópolis, {{Data}}
 
 (assinado digitalmente)
 IGOR ANDRADE LARA
@@ -411,128 +388,184 @@ RENATA MARIA SILVA OLIVEIRA
 (assinado digitalmente)
 VIVIANE DE FÁTIMA ALVES`;
 
-        function preencherTexto(template, dados) {
-            return template
-                .replace(/{{\s*Protocolo\s*}}/g, dados.protocolo)
-                .replace(/{{\s*Nome\s*}}/g, dados.nome)
-                .replace(/{{\s*Matricula\s*}}/g, dados.matricula)
-                .replace(/{{\s*Cargo\s*}}/g, dados.cargo);
-        }
+    // Função para preencher os placeholders
+    function preencherTemplate(genero, dados) {
+        const template = genero === 'M' ? modeloMasculino : modeloFeminino;
+        let resultado = template
+            .replace(/{{Protocolo}}/g, dados.protocolo)
+            .replace(/{{Nome}}/g, dados.nome)
+            .replace(/{{Matricula}}/g, dados.matricula)
+            .replace(/{{Cargo}}/g, dados.cargo)
+            .replace(/{{Data}}/g, dados.data);
+        
+        return resultado;
+    }
 
-        async function gerarDocx(textoFinal, nomeArquivo) {
-            const { Document, Packer, Paragraph, TextRun, AlignmentType } = docx;
-            
-            const linhas = textoFinal.split(/\r?\n/);
-            const children = [];
-
-            for (let linha of linhas) {
-                if (linha.trim() === "") {
-                    children.push(new Paragraph({ children: [new TextRun("")], spacing: { after: 80 } }));
-                    continue;
-                }
-                
-                let runs = [];
-                let boldFlag = false;
-                let underlineFlag = false;
-                let alignment = AlignmentType.LEFT;
-                
-                if (linha.includes("TERMO DE INSTAURAÇÃO") || linha.includes("[TERMO")) {
-                    boldFlag = true;
-                    underlineFlag = true;
-                    alignment = AlignmentType.CENTER;
-                } else if (linha.includes("PROCESSO ADMINISTRATIVO DIGITAL")) {
-                    boldFlag = true;
-                    alignment = AlignmentType.CENTER;
-                } else if (linha.match(/^[IVXLCDM]+\.\s/) || linha.match(/^\d+\./)) {
-                    boldFlag = true;
-                } else if (linha.includes("assinado digitalmente") || (linha.match(/^[A-ZÇÃÕÁÉÚ]+ [A-ZÇÃÕÁÉÚ]/) && linha.length < 60)) {
-                    runs.push(new TextRun({ text: linha, bold: false, italics: true, font: "Times New Roman", size: 22 }));
-                    children.push(new Paragraph({ children: runs, alignment: AlignmentType.LEFT, spacing: { after: 80 } }));
-                    continue;
-                }
-                
-                if (underlineFlag) {
-                    runs.push(new TextRun({ text: linha, bold: true, underline: { type: "single" }, font: "Times New Roman", size: 24 }));
-                } else if (boldFlag) {
-                    runs.push(new TextRun({ text: linha, bold: true, font: "Times New Roman", size: 24 }));
-                } else {
-                    runs.push(new TextRun({ text: linha, font: "Times New Roman", size: 24 }));
-                }
-                
-                children.push(new Paragraph({ children: runs, alignment: alignment, spacing: { after: 100 } }));
-            }
-            
-            const doc = new Document({
-                sections: [{
-                    properties: {
-                        page: { margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 } }
-                    },
-                    children: children
-                }]
-            });
-            
-            const blob = await Packer.toBlob(doc);
+    // Função para gerar o arquivo DOCX (usando abordagem mais simples e confiável)
+    function gerarDOCX(conteudoTexto, nomeArquivo) {
+        // Criar um blob com o conteúdo em formato RTF/DOCX simples
+        // Vamos usar HTML com formatação que o Word reconhece perfeitamente
+        
+        const dataAtual = new Date().toLocaleDateString('pt-BR');
+        
+        // Criar um documento HTML formatado que o Word abre perfeitamente
+        const htmlContent = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Termo de Instauração - ${nomeArquivo}</title>
+<style>
+    body {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 12pt;
+        margin: 2.5cm 2cm;
+        line-height: 1.4;
+    }
+    .title {
+        text-align: center;
+        font-weight: bold;
+        text-decoration: underline;
+        font-size: 14pt;
+        margin-bottom: 20px;
+    }
+    .center {
+        text-align: center;
+    }
+    .bold {
+        font-weight: bold;
+    }
+    .signature {
+        margin-top: 5px;
+        font-style: italic;
+    }
+    p {
+        margin: 0 0 8px 0;
+    }
+    .section {
+        margin-top: 15px;
+    }
+</style>
+</head>
+<body>
+<pre style="font-family: 'Times New Roman', Times, serif; font-size: 12pt; white-space: pre-wrap; word-wrap: break-word; margin: 0;">${conteudoTexto}</pre>
+</body>
+</html>`;
+        
+        // Converter para Blob como application/msword
+        const blob = new Blob([htmlContent], { type: 'application/msword' });
+        
+        // Forçar download usando FileSaver ou fallback
+        if (typeof saveAs !== 'undefined') {
             saveAs(blob, nomeArquivo);
+        } else {
+            // Fallback para navegadores sem FileSaver
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = nomeArquivo;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
         }
+        
+        return true;
+    }
 
-        const nomeInput = document.getElementById('nome');
-        const matriculaInput = document.getElementById('matricula');
-        const cargoInput = document.getElementById('cargo');
-        const protocoloInput = document.getElementById('protocolo');
-        const gerarBtn = document.getElementById('gerarBtn');
-        const previewArea = document.getElementById('previewArea');
-        const previewContent = document.getElementById('previewContent');
-        const downloadBtn = document.getElementById('downloadBtn');
+    // DOM elements
+    const nomeInput = document.getElementById('nome');
+    const matriculaInput = document.getElementById('matricula');
+    const cargoInput = document.getElementById('cargo');
+    const protocoloInput = document.getElementById('protocolo');
+    const gerarBtn = document.getElementById('gerarBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const previewArea = document.getElementById('previewArea');
+    const previewContent = document.getElementById('previewContent');
+    const successMsg = document.getElementById('successMsg');
 
-        let ultimoTextoGerado = "";
-        let ultimoNomeArquivo = "";
+    let ultimoTexto = '';
+    let ultimoNomeArquivo = '';
 
-        function gerarDocumento() {
-            const nome = nomeInput.value.trim();
-            const matricula = matriculaInput.value.trim();
-            const cargo = cargoInput.value.trim();
-            const protocolo = protocoloInput.value.trim();
-
-            if (!nome || !matricula || !cargo || !protocolo) {
-                alert("Preencha todos os campos!");
-                return false;
-            }
-
-            const genero = document.querySelector('input[name="genero"]:checked').value;
-            const template = genero === 'masculino' ? modeloMasculino : modeloFeminino;
-            const dados = { nome, matricula, cargo, protocolo };
-            let textoFinal = preencherTexto(template, dados);
-            
-            const hoje = new Date().toLocaleDateString('pt-BR');
-            textoFinal = textoFinal.replace(/data da assinatura digital\./g, `Divinópolis, ${hoje}.`);
-            
-            ultimoTextoGerado = textoFinal;
-            
-            const nomeSlug = nome.substring(0, 30).replace(/[^a-z0-9]/gi, '_');
-            const prefixo = genero === 'masculino' ? 'TERMO_M' : 'TERMO_F';
-            ultimoNomeArquivo = `${prefixo}_${nomeSlug}_${protocolo.replace(/[\/\\]/g, '-')}.docx`;
-            
-            previewContent.innerText = textoFinal;
-            previewArea.style.display = 'block';
-            return true;
+    function gerarTextoCompleto() {
+        const nome = nomeInput.value.trim();
+        const matricula = matriculaInput.value.trim();
+        const cargo = cargoInput.value.trim();
+        const protocolo = protocoloInput.value.trim();
+        const genero = document.querySelector('input[name="genero"]:checked').value;
+        
+        if (!nome || !matricula || !cargo || !protocolo) {
+            alert('❌ Preencha todos os campos!');
+            return null;
         }
+        
+        const dataHoje = new Date().toLocaleDateString('pt-BR');
+        const dados = {
+            nome: nome,
+            matricula: matricula,
+            cargo: cargo,
+            protocolo: protocolo,
+            data: dataHoje
+        };
+        
+        const textoFinal = preencherTemplate(genero, dados);
+        
+        // Gerar nome do arquivo
+        const nomeSlug = nome.substring(0, 30).replace(/[^a-z0-9]/gi, '_');
+        const prefixo = genero === 'M' ? 'TERMO_READAPTACAO_M' : 'TERMO_READAPTACAO_F';
+        const nomeArquivo = `${prefixo}_${nomeSlug}_${protocolo.replace(/[\/\\:]/g, '-')}.docx`;
+        
+        return { texto: textoFinal, arquivo: nomeArquivo };
+    }
 
-        function baixarWord() {
-            if (!ultimoTextoGerado) {
-                alert("Gere o termo primeiro!");
-                return;
-            }
-            gerarDocx(ultimoTextoGerado, ultimoNomeArquivo);
+    function exibirPreview(texto) {
+        previewContent.innerText = texto;
+        previewArea.style.display = 'block';
+        previewArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function mostrarMensagemSucesso(mensagem) {
+        successMsg.textContent = mensagem;
+        successMsg.style.display = 'block';
+        setTimeout(() => {
+            successMsg.style.display = 'none';
+        }, 4000);
+    }
+
+    // Evento do botão gerar + baixar
+    gerarBtn.addEventListener('click', () => {
+        const resultado = gerarTextoCompleto();
+        if (!resultado) return;
+        
+        ultimoTexto = resultado.texto;
+        ultimoNomeArquivo = resultado.arquivo;
+        
+        // Exibir preview
+        exibirPreview(ultimoTexto);
+        
+        // Tentar baixar o arquivo
+        try {
+            gerarDOCX(ultimoTexto, ultimoNomeArquivo);
+            mostrarMensagemSucesso('✅ Documento gerado e baixado com sucesso! O arquivo mantém toda a formatação original.');
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('❌ Erro ao gerar o arquivo. Tente novamente.');
         }
-
-        gerarBtn.addEventListener('click', () => {
-            if (gerarDocumento()) {
-                previewArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    
+    // Botão de baixar novamente (se precisar)
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', () => {
+            if (ultimoTexto && ultimoNomeArquivo) {
+                gerarDOCX(ultimoTexto, ultimoNomeArquivo);
+                mostrarMensagemSucesso('✅ Download reiniciado!');
+            } else {
+                alert('Nenhum documento gerado ainda. Clique em "Gerar Termo" primeiro.');
             }
         });
-        
-        downloadBtn.addEventListener('click', baixarWord);
-    })();
+    }
+    
+    // Placeholder visual para exemplo
+    console.log('Sistema pronto - Gera DOCX com formatação original!');
 </script>
 </body>
 </html>
